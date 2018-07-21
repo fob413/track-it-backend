@@ -10,6 +10,7 @@ class Users(db.Model):
   password_hash = db.Column(db.Text, nullable=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   deleted_at = db.Column(db.DateTime, nullable=True)
+  shipments = db.relationship('Shipments', backref=db.backref('user', lazy=True))
 
   @property
   def password(self):
