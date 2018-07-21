@@ -3,6 +3,7 @@ from functools import wraps
 from flask import jsonify, request, make_response, g
 from api.models import Users
 import jwt
+from api.core.flask_mail_service import FlaskMailService
 
 # authorization decorator
 def token_required(f):
@@ -142,3 +143,18 @@ def validate_request(*expected_args):
             return f(*args, **kwargs)
         return decorated
     return real_validate_request
+
+class NotificationRecipient:
+    def __init__(self):
+        pass
+
+    def user_recipient(*args):
+        print(args)
+        email = {
+            'config':app,
+            'subj': subject,
+            'from': SENDER,
+            'to': user_email,
+            'body': body
+        }
+        return FlaskMailService.send_mail(email)

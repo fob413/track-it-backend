@@ -1,11 +1,17 @@
-from flask import request, jsonify, make_response, Blueprint, g
+import atexit
+from pytz import utc
+from flask import request, jsonify, make_response, Blueprint, g, current_app
 from flask_restful import Resource
 from api.models import Users, Pfi, Shipments
-from api.helpers import token_required, validate_request
-from api import db
+from api.helpers import token_required, validate_request, NotificationRecipient
+from api import db, scheduler, executors, job_defaults
+from flask_sse import sse
 
+
+scheduler.configure(executors=executors, job_defaults=job_defaults, timezone=utc)
 
 pfi_blueprint = Blueprint('pfi', __name__)
+sse_blueprint = Blueprint(sse, __name__)
 
 @pfi_blueprint.route('/api/v1/pfi', methods=['POST'])
 @token_required
@@ -19,6 +25,8 @@ def create_pfi():
   shipment = Shipments(
     user_id = g.current_user.user_id
   )
+  user = Users.query.filter_by(id=shipment.user_id).first()
+  user_email = user.email
 
   db.session.add(shipment)
   db.session.commit()
@@ -54,13 +62,34 @@ def create_pfi():
     hscode_percentage=pft.hscode_percentage,
     unit_cost=pft.unit_cost
   )
-
+  subject = f'Your shipment with id {shipment.id} is yet to have complete documents'
+  SENDER = 'UNILEVER_BOT'
+  body = 'This is to notify you to complete your documentation'
+  app = current_app
+  email = {
+      'config': app,
+      'subj': subject,
+      'from': SENDER,
+      'to': user_email,
+      'body': body
+  }
+  scheduler.add_job(
+    lambda: NotificationRecipient().user_recipient(email), 'interval', hours=24, id='send_email', start_date='2018-07-20 14:30:00', timezone='Africa/Lagos')
+  stream(new_pfi)
   resopnse_object = {
     'status': 'success',
     'message': 'successfully created pfi',
     'data': new_pfi
   }
   return make_response(jsonify(resopnse_object)), 200
+
+@sse_blueprint.route('/api/v1/stream', methods=['GET'])
+def stream(new_pfi):
+  """
+  Sends server sent event to the user
+  """
+  sse.publish(new_pfi, type='pfi')
+  return "Message sent!"
 
 
 @pfi_blueprint.route('/api/v1/pfi/<pfi_id>', methods=['GET'])
