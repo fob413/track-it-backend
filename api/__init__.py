@@ -21,4 +21,7 @@ CORS(app)
 from api.views.manage_user import login_blueprint
 app.register_blueprint(login_blueprint)
 
+from api.views.manage_pfi import pfi_blueprint
+app.register_blueprint(pfi_blueprint)
+
 app.shell_context_processor({'app': app, 'db': db})
