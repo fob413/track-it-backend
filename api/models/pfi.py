@@ -16,6 +16,7 @@ class Pfi(db.Model):
   items_detail = db.Column(db.Text, nullable=True)
   pfi_type = db.Column(db.String(80), nullable=True)
   url = db.Column(db.Text, nullable=True)
+  shipment = db.relationship('Shipments', backref='pfi', lazy=True)
   
   def __repr__(self):
     return '<Pfi %r>' % self.id
