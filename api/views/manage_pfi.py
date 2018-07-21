@@ -9,7 +9,7 @@ pfi_blueprint = Blueprint('pfi', __name__)
 
 @pfi_blueprint.route('/api/v1/pfi', methods=['POST'])
 @token_required
-@validate_request(((str, 'item_detail', 'type', 'url', 'supplier_name')))
+@validate_request(((str, 'item_detail', 'type', 'supplier_name')))
 @validate_request(((int, 'quantity', 'cost', 'hs_code', 'pfi_number', 'hscode_percentage', 'unit_cost')))
 def create_pfi():
   """
@@ -29,7 +29,6 @@ def create_pfi():
     hs_code = post_data['hs_code'],
     items_detail = post_data['item_detail'],
     pfi_type = post_data['type'],
-    url = post_data['url'],
     shipments_id = shipment.id,
     supplier_name = post_data['supplier_name'],
     pfi_number = post_data['pfi_number'],
@@ -47,7 +46,6 @@ def create_pfi():
     hs_code=pft.hs_code,
     items_detail=pft.items_detail,
     pft_type=pft.pfi_type,
-    url=pft.url,
     shipment_id=pft.shipments_id,
     supplier_name=pft.supplier_name,
     pfi_number=pft.pfi_number,
@@ -81,7 +79,6 @@ def get_single_pfi(pfi_id=None):
           hs_code=pfi.hs_code,
           items_detail=pfi.items_detail,
           pft_type=pfi.pfi_type,
-          url=pfi.url,
           shipment_id=pfi.shipments_id,
           supplier_name=pfi.supplier_name,
           pfi_number=pfi.pfi_number,
@@ -116,7 +113,7 @@ def get_single_pfi(pfi_id=None):
 
 @pfi_blueprint.route('/api/v1/pfi/<pfi_id>', methods=['PUT'])
 @token_required
-@validate_request(((str, 'item_detail', 'type', 'url', 'supplier_name')))
+@validate_request(((str, 'item_detail', 'type', 'supplier_name')))
 @validate_request(((int, 'quantity', 'cost', 'hs_code', 'pfi_number', 'hscode_percentage', 'unit_cost')))
 def update_pfi(pfi_id=None):
   """
@@ -135,7 +132,6 @@ def update_pfi(pfi_id=None):
         pfi.hs_code = post_data['hs_code']
         pfi.items_detail = post_data['item_detail']
         pfi.pfi_type = post_data['type']
-        pfi.url = post_data['url']
         pfi.supplier_name = post_data['supplier_name']
         pfi.pfi_number = post_data['pfi_number']
         pfi.hscode_percentage = post_data['hscode_percentage']
@@ -151,7 +147,6 @@ def update_pfi(pfi_id=None):
           hs_code=pfi.hs_code,
           items_detail=pfi.items_detail,
           pfi_type=pfi.pfi_type,
-          url=pfi.url,
           shipment_id=pfi.shipments_id,
           supplier_name=pfi.supplier_name,
           pfi_number=pfi.pfi_number,
