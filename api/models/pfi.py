@@ -12,7 +12,7 @@ class Pfi(db.Model):
   cost = db.Column(db.Integer, nullable=False)
   hs_code = db.Column(db.Integer, nullable=False)
   items_detail = db.Column(db.Text, nullable=True)
-  pft_type = db.Column(db.String(80), nullable=True)
+  pfi_type = db.Column(db.String(80), nullable=True)
   url = db.Column(db.Text, nullable=True)
   
   def __repr__(self):
