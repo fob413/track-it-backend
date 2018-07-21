@@ -27,6 +27,7 @@ def user_login():
                 'message': 'wrong email or password'
             })), 401
     except Exception as error:
+        print(error)
         return make_response(jsonify({
             'status': 'fail',
             'message': 'An error occured'
