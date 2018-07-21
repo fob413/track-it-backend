@@ -1,6 +1,6 @@
 from flask import request, jsonify, make_response, Blueprint, g
 from flask_restful import Resource
-from api.models import Users, Pfi, Shipments
+from api.models import Pfi, Shipments
 from api.helpers import token_required, validate_request
 from api import db
 
