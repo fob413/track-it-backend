@@ -5,6 +5,8 @@ from datetime import datetime
 class Pfi(db.Model):
   __tablename__ = 'pfi'
   id = db.Column(db.Integer, primary_key=True)
+  supplier_name = db.Column(db.String(80), nullable=False)
+  pfi_number = db.Column(db.Integer, nullable=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   shipments_id = db.Column(db.Integer, db.ForeignKey('shipments.id'), nullable=False)
