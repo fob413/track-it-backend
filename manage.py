@@ -1,7 +1,7 @@
 from api import app, db
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from api.models import (Users, Shipments, Pfi)
+from api.models import (Users, Shipments, Pfi, Formm, Insurance, LetterOfCredit, RequiredPermission)
 
 
 migrate = Migrate(app, db)
