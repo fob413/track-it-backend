@@ -1,12 +1,13 @@
-from api import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from api import db
 
 class Users(db.Model):
   __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key=True)
   email = db.Column(db.String(80), nullable=False)
+  is_active = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.Text, nullable=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   deleted_at = db.Column(db.DateTime, nullable=True)

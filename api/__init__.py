@@ -2,10 +2,8 @@ import os
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Api
 
 from api.views.dummy_api import Dummy
-from api.views.manage_user import LoginResource, DeleteResource
 
 db = SQLAlchemy()
 
@@ -17,6 +15,12 @@ app.config.from_object(app_settings)
 
 db.init_app(app)
 
+<<<<<<< HEAD
 api = Api(app)
+=======
+from api.views.manage_user import login_blueprint, logout_blueprint
+app.register_blueprint(login_blueprint)
+app.register_blueprint(logout_blueprint)
+>>>>>>> login deployment
 
 app.shell_context_processor({'app': app, 'db': db})
