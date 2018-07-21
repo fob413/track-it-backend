@@ -10,7 +10,7 @@ pfi_blueprint = Blueprint('pfi', __name__)
 @pfi_blueprint.route('/api/v1/pfi', methods=['POST'])
 @token_required
 @validate_request(((str, 'item_detail', 'type', 'url', 'supplier_name')))
-@validate_request(((int, 'quantity', 'cost', 'hs_code', 'pfi_number')))
+@validate_request(((int, 'quantity', 'cost', 'hs_code', 'pfi_number', 'hscode_percentage', 'unit_cost')))
 def create_pfi():
   """
   Controls the pfi login operations
@@ -32,7 +32,9 @@ def create_pfi():
     url = post_data['url'],
     shipments_id = shipment.id,
     supplier_name = post_data['supplier_name'],
-    pfi_number = post_data['pfi_number']
+    pfi_number = post_data['pfi_number'],
+    hscode_percentage = post_data['hscode_percentage'],
+    unit_cost = post_data['unit_cost']
   )
 
   db.session.add(pft)
@@ -48,7 +50,9 @@ def create_pfi():
     url=pft.url,
     shipment_id=pft.shipments_id,
     supplier_name=pft.supplier_name,
-    pfi_number=pft.pfi_number
+    pfi_number=pft.pfi_number,
+    hscode_percentage=pft.hscode_percentage,
+    unit_cost=pft.unit_cost
   )
 
   resopnse_object = {
@@ -80,7 +84,9 @@ def get_single_pfi(pfi_id=None):
           url=pfi.url,
           shipment_id=pfi.shipments_id,
           supplier_name=pfi.supplier_name,
-          pfi_number=pfi.pfi_number
+          pfi_number=pfi.pfi_number,
+          hscode_percentage=pfi.hscode_percentage,
+          unit_cost=pfi.unit_cost
         )
         resopnse_object = jsonify({
           'status': 'success',
@@ -111,7 +117,7 @@ def get_single_pfi(pfi_id=None):
 @pfi_blueprint.route('/api/v1/pfi/<pfi_id>', methods=['PUT'])
 @token_required
 @validate_request(((str, 'item_detail', 'type', 'url', 'supplier_name')))
-@validate_request(((int, 'quantity', 'cost', 'hs_code', 'pfi_number')))
+@validate_request(((int, 'quantity', 'cost', 'hs_code', 'pfi_number', 'hscode_percentage', 'unit_cost')))
 def update_pfi(pfi_id=None):
   """
   Controls the pfi login operations
@@ -132,6 +138,8 @@ def update_pfi(pfi_id=None):
         pfi.url = post_data['url']
         pfi.supplier_name = post_data['supplier_name']
         pfi.pfi_number = post_data['pfi_number']
+        pfi.hscode_percentage = post_data['hscode_percentage']
+        pfi.unit_cost = post_data['unit_cost']
 
         db.session.add(pfi)
         db.session.commit()
@@ -146,7 +154,9 @@ def update_pfi(pfi_id=None):
           url=pfi.url,
           shipment_id=pfi.shipments_id,
           supplier_name=pfi.supplier_name,
-          pfi_number=pfi.pfi_number
+          pfi_number=pfi.pfi_number,
+          hscode_percentage=pfi.hscode_percentage,
+          unit_cost=pfi.unit_cost
         )
         
         resopnse_object = {
