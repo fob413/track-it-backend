@@ -27,4 +27,7 @@ app.register_blueprint(pfi_blueprint)
 from api.views.manage_shipments import statement_blueprint
 app.register_blueprint(statement_blueprint)
 
+from api.views.manage_formm import formm_blueprint
+app.register_blueprint(formm_blueprint)
+
 app.shell_context_processor({'app': app, 'db': db})
