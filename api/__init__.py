@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from api.views.dummy_api import Dummy
 
@@ -15,6 +16,7 @@ app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 
 db.init_app(app)
+CORS(app)
 
 from api.views.manage_user import login_blueprint
 app.register_blueprint(login_blueprint)
